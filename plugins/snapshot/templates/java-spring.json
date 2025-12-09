@@ -1,0 +1,124 @@
+{
+  "name": "java-spring",
+  "description": "Java Spring Boot 專案範本",
+  "detectFiles": ["build.gradle", "pom.xml"],
+  "detectPatterns": {
+    "spring": ["org.springframework"],
+    "springBoot": ["@SpringBootApplication"]
+  },
+  "structure": {
+    "entry_point": {
+      "patterns": ["**/*Application.java", "**/Main.java"],
+      "markers": ["public static void main", "@SpringBootApplication"],
+      "purpose": "Spring Boot 應用程式入口"
+    },
+    "modules": {
+      "controllers": {
+        "patterns": ["**/controller/**/*.java", "**/*Controller.java"],
+        "markers": ["@Controller", "@RestController"],
+        "type": "controller",
+        "purpose": "處理 HTTP 請求的控制器"
+      },
+      "services": {
+        "patterns": ["**/service/**/*.java", "**/*Service.java", "**/*ServiceImpl.java"],
+        "markers": ["@Service"],
+        "type": "service",
+        "purpose": "業務邏輯服務層"
+      },
+      "repositories": {
+        "patterns": ["**/repository/**/*.java", "**/*Repository.java", "**/dao/**/*.java", "**/*Dao.java"],
+        "markers": ["@Repository", "extends JpaRepository", "extends CrudRepository"],
+        "type": "repository",
+        "purpose": "資料存取層"
+      },
+      "entities": {
+        "patterns": ["**/entity/**/*.java", "**/model/**/*.java", "**/*Entity.java"],
+        "markers": ["@Entity", "@Table"],
+        "type": "entity",
+        "purpose": "JPA 實體類別"
+      },
+      "dto": {
+        "patterns": ["**/dto/**/*.java", "**/*DTO.java", "**/*Dto.java", "**/*Request.java", "**/*Response.java"],
+        "type": "dto",
+        "purpose": "資料傳輸物件"
+      },
+      "config": {
+        "patterns": ["**/config/**/*.java", "**/*Config.java", "**/*Configuration.java"],
+        "markers": ["@Configuration", "@Bean"],
+        "type": "configuration",
+        "purpose": "Spring 設定類別"
+      },
+      "components": {
+        "patterns": ["**/component/**/*.java", "**/*Component.java"],
+        "markers": ["@Component"],
+        "type": "component",
+        "purpose": "Spring 元件"
+      },
+      "aspects": {
+        "patterns": ["**/aspect/**/*.java", "**/*Aspect.java"],
+        "markers": ["@Aspect"],
+        "type": "aspect",
+        "purpose": "AOP 切面"
+      },
+      "exceptions": {
+        "patterns": ["**/exception/**/*.java", "**/*Exception.java"],
+        "type": "exception",
+        "purpose": "自訂例外類別"
+      },
+      "utils": {
+        "patterns": ["**/util/**/*.java", "**/utils/**/*.java", "**/*Utils.java", "**/*Util.java", "**/*Helper.java"],
+        "type": "utility",
+        "purpose": "工具類別"
+      }
+    },
+    "config_files": {
+      "patterns": [
+        "application.properties",
+        "application.yml",
+        "application.yaml",
+        "application-*.properties",
+        "application-*.yml",
+        "build.gradle",
+        "pom.xml",
+        "settings.gradle",
+        "gradle.properties"
+      ]
+    },
+    "test_files": {
+      "patterns": ["**/test/**/*.java", "**/*Test.java", "**/*Tests.java", "**/*IT.java"],
+      "exclude": true
+    }
+  },
+  "commands": {
+    "build": {
+      "gradle": "./gradlew build",
+      "maven": "mvn clean package"
+    },
+    "run": {
+      "gradle": "./gradlew bootRun",
+      "maven": "mvn spring-boot:run"
+    },
+    "test": {
+      "gradle": "./gradlew test",
+      "maven": "mvn test"
+    }
+  },
+  "exclude": [
+    "build/",
+    "target/",
+    ".gradle/",
+    ".idea/",
+    "*.class",
+    "*.jar",
+    "*.war"
+  ],
+  "design_patterns": {
+    "detect": {
+      "factory": ["Factory", "FactoryBean"],
+      "singleton": ["@Component", "@Service", "@Repository"],
+      "strategy": ["Strategy", "implements.*Strategy"],
+      "repository": ["@Repository", "Repository"],
+      "dependency_injection": ["@Autowired", "@Inject"]
+    }
+  }
+}

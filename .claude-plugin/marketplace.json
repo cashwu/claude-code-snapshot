@@ -1,0 +1,13 @@
+{
+  "name": "claude-code-snapshot",
+  "description": "Snapshot Skill - 產生專案地圖讓 AI 快速了解專案結構",
+  "version": "1.0.0",
+  "plugins": [
+    {
+      "id": "snapshot",
+      "name": "Snapshot",
+      "description": "產生和維護 snapshot.json 專案地圖",
+      "path": "plugins/snapshot"
+    }
+  ]
+}

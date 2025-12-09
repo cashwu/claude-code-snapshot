@@ -1,0 +1,84 @@
+{
+  "name": "custom",
+  "description": "自訂專案範本 - 可根據需求修改",
+  "detectFiles": [],
+  "detectPatterns": {},
+  "structure": {
+    "entry_point": {
+      "patterns": [],
+      "markers": [],
+      "purpose": "應用程式入口"
+    },
+    "modules": {
+      "example_module": {
+        "patterns": ["**/example/**/*.ext"],
+        "markers": ["marker_keyword"],
+        "type": "example",
+        "purpose": "範例模組說明"
+      }
+    },
+    "config_files": {
+      "patterns": []
+    },
+    "test_files": {
+      "patterns": [],
+      "exclude": true
+    }
+  },
+  "commands": {
+    "build": "",
+    "run": "",
+    "test": ""
+  },
+  "exclude": [
+    ".git/",
+    "node_modules/",
+    "__pycache__/",
+    "build/",
+    "dist/"
+  ],
+  "design_patterns": {
+    "detect": {}
+  },
+  "_template_guide": {
+    "description": "如何使用此自訂範本",
+    "steps": [
+      "1. 複製此檔案並重新命名（例如：my-framework.json）",
+      "2. 修改 detectFiles - 設定用來識別專案類型的檔案",
+      "3. 修改 detectPatterns - 設定用來識別框架/語言的關鍵字",
+      "4. 修改 structure.entry_point - 設定主程式入口的模式",
+      "5. 修改 structure.modules - 新增你的模組分類",
+      "6. 修改 config_files - 設定設定檔的模式",
+      "7. 修改 commands - 設定常用指令",
+      "8. 修改 exclude - 設定要排除的目錄/檔案"
+    ],
+    "pattern_syntax": {
+      "glob": "使用 glob 語法，例如：**/*.java、**/controller/**/*.ts",
+      "markers": "使用正規表達式來匹配檔案內容",
+      "exclude": "可使用 ! 前綴來排除特定模式"
+    },
+    "module_fields": {
+      "patterns": "檔案路徑模式（必填）",
+      "markers": "檔案內容標記（選填，用於更精確的識別）",
+      "type": "模組類型標籤（必填）",
+      "purpose": "模組用途說明（必填）",
+      "exclude": "要排除的子模式（選填）"
+    },
+    "examples": {
+      "add_new_module": {
+        "services": {
+          "patterns": ["**/services/**/*.ts", "**/*Service.ts"],
+          "markers": ["@Injectable", "class.*Service"],
+          "type": "service",
+          "purpose": "業務邏輯服務層"
+        }
+      },
+      "custom_framework": {
+        "detectFiles": ["my-framework.config.js"],
+        "detectPatterns": {
+          "my_framework": ["my-framework"]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "name": "csharp-dotnet",
+  "description": "C# .NET Core 專案範本",
+  "detectFiles": ["*.csproj", "*.sln", "Program.cs"],
+  "detectPatterns": {
+    "aspnet": ["Microsoft.AspNetCore", "WebApplication"],
+    "efcore": ["Microsoft.EntityFrameworkCore", "DbContext"],
+    "blazor": ["Microsoft.AspNetCore.Components"],
+    "maui": ["Microsoft.Maui"]
+  },
+  "structure": {
+    "entry_point": {
+      "patterns": ["Program.cs", "**/Program.cs"],
+      "markers": ["static void Main", "WebApplication.CreateBuilder", "Host.CreateDefaultBuilder"],
+      "purpose": ".NET 應用程式入口"
+    },
+    "modules": {
+      "controllers": {
+        "patterns": ["**/Controllers/**/*.cs", "**/*Controller.cs"],
+        "markers": ["[ApiController]", "[Controller]", ": ControllerBase", ": Controller"],
+        "type": "controller",
+        "purpose": "API/MVC 控制器"
+      },
+      "services": {
+        "patterns": ["**/Services/**/*.cs", "**/*Service.cs"],
+        "markers": ["IService", "Service"],
+        "type": "service",
+        "purpose": "業務邏輯服務"
+      },
+      "repositories": {
+        "patterns": ["**/Repositories/**/*.cs", "**/*Repository.cs", "**/Data/**/*.cs"],
+        "markers": ["IRepository", "Repository"],
+        "type": "repository",
+        "purpose": "資料存取層"
+      },
+      "models": {
+        "patterns": ["**/Models/**/*.cs", "**/Entities/**/*.cs", "**/*Model.cs", "**/*Entity.cs"],
+        "type": "model",
+        "purpose": "資料模型/實體"
+      },
+      "dtos": {
+        "patterns": ["**/DTOs/**/*.cs", "**/Dtos/**/*.cs", "**/*Dto.cs", "**/*DTO.cs", "**/*Request.cs", "**/*Response.cs"],
+        "type": "dto",
+        "purpose": "資料傳輸物件"
+      },
+      "dbcontext": {
+        "patterns": ["**/Data/**/*Context.cs", "**/*DbContext.cs", "**/*Context.cs"],
+        "markers": [": DbContext", "DbSet<"],
+        "type": "dbcontext",
+        "purpose": "Entity Framework DbContext"
+      },
+      "configurations": {
+        "patterns": ["**/Configurations/**/*.cs", "**/*Configuration.cs"],
+        "markers": ["IEntityTypeConfiguration", "EntityTypeBuilder"],
+        "type": "configuration",
+        "purpose": "EF Core 實體設定"
+      },
+      "middlewares": {
+        "patterns": ["**/Middlewares/**/*.cs", "**/*Middleware.cs"],
+        "markers": ["IMiddleware", "RequestDelegate"],
+        "type": "middleware",
+        "purpose": "中介軟體"
+      },
+      "filters": {
+        "patterns": ["**/Filters/**/*.cs", "**/*Filter.cs", "**/*Attribute.cs"],
+        "markers": ["IActionFilter", "IExceptionFilter", "ActionFilterAttribute"],
+        "type": "filter",
+        "purpose": "動作過濾器"
+      },
+      "validators": {
+        "patterns": ["**/Validators/**/*.cs", "**/*Validator.cs"],
+        "markers": ["AbstractValidator", "FluentValidation"],
+        "type": "validator",
+        "purpose": "驗證器 (FluentValidation)"
+      },
+      "handlers": {
+        "patterns": ["**/Handlers/**/*.cs", "**/*Handler.cs"],
+        "markers": ["IRequestHandler", "INotificationHandler"],
+        "type": "handler",
+        "purpose": "CQRS 處理器 (MediatR)"
+      },
+      "queries": {
+        "patterns": ["**/Queries/**/*.cs", "**/*Query.cs"],
+        "markers": ["IRequest"],
+        "type": "query",
+        "purpose": "CQRS 查詢"
+      },
+      "commands": {
+        "patterns": ["**/Commands/**/*.cs", "**/*Command.cs"],
+        "markers": ["IRequest"],
+        "type": "command",
+        "purpose": "CQRS 命令"
+      },
+      "interfaces": {
+        "patterns": ["**/Interfaces/**/*.cs", "**/Abstractions/**/*.cs", "I*.cs"],
+        "markers": ["interface I"],
+        "type": "interface",
+        "purpose": "介面定義"
+      },
+      "extensions": {
+        "patterns": ["**/Extensions/**/*.cs", "**/*Extensions.cs"],
+        "markers": ["static class", "this "],
+        "type": "extension",
+        "purpose": "擴展方法"
+      },
+      "helpers": {
+        "patterns": ["**/Helpers/**/*.cs", "**/*Helper.cs", "**/Utils/**/*.cs"],
+        "type": "helper",
+        "purpose": "工具類別"
+      },
+      "exceptions": {
+        "patterns": ["**/Exceptions/**/*.cs", "**/*Exception.cs"],
+        "markers": [": Exception"],
+        "type": "exception",
+        "purpose": "自訂例外"
+      },
+      "blazor_components": {
+        "patterns": ["**/Components/**/*.razor", "**/Pages/**/*.razor", "**/*.razor"],
+        "type": "component",
+        "purpose": "Blazor 元件"
+      }
+    },
+    "config_files": {
+      "patterns": [
+        "*.csproj",
+        "*.sln",
+        "appsettings.json",
+        "appsettings.*.json",
+        "launchSettings.json",
+        "Directory.Build.props",
+        "Directory.Packages.props",
+        "global.json",
+        ".editorconfig"
+      ]
+    },
+    "test_files": {
+      "patterns": [
+        "**/*.Tests/**/*.cs",
+        "**/*Tests.cs",
+        "**/*Test.cs",
+        "**/Tests/**/*.cs"
+      ],
+      "exclude": true
+    }
+  },
+  "commands": {
+    "restore": "dotnet restore",
+    "build": "dotnet build",
+    "run": "dotnet run",
+    "test": "dotnet test",
+    "publish": "dotnet publish -c Release",
+    "ef_migrate": "dotnet ef migrations add",
+    "ef_update": "dotnet ef database update"
+  },
+  "exclude": [
+    "bin/",
+    "obj/",
+    ".vs/",
+    "*.user",
+    "*.suo",
+    "packages/",
+    "TestResults/"
+  ],
+  "design_patterns": {
+    "detect": {
+      "repository": ["Repository", "IRepository"],
+      "unit_of_work": ["IUnitOfWork", "UnitOfWork"],
+      "cqrs": ["IRequest", "IRequestHandler", "MediatR"],
+      "dependency_injection": ["services.Add", "IServiceCollection"],
+      "factory": ["Factory", "IFactory"],
+      "specification": ["Specification", "ISpecification"],
+      "clean_architecture": ["Application", "Domain", "Infrastructure", "Presentation"]
+    }
+  }
+}
