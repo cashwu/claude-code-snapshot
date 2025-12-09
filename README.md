@@ -38,6 +38,19 @@ Snapshot 的解決方案：
 | `/snapshot` | 掃描專案並產生 `.snapshot/snapshot.json` |
 | `/snapshot-link` | 在 `CLAUDE.md` 加入 snapshot 參考提示 |
 
+### `/snapshot-link` 說明
+
+這個指令會在專案的 `CLAUDE.md` 檔案中加入 snapshot 參考提示，讓 AI 在每次新對話開始時自動知道去讀取 `.snapshot/snapshot.json`。
+
+**使用情境：**
+- 希望 AI 自動參考 snapshot，不需要每次手動提醒
+- 搭配 `/snapshot` 使用，完成完整的設定
+
+**執行結果：**
+- 如果 `CLAUDE.md` 不存在 → 自動建立並加入提示
+- 如果已存在但沒有 snapshot 參考 → 在檔案末尾加入
+- 如果已經有 snapshot 參考 → 不會重複加入
+
 ## 快速開始
 
 ```
