@@ -2,7 +2,7 @@
 
 > 基於 [tzangms (海總理)](https://tzangms.com) 的 Vibe Coding 方法論
 
-Snapshot Skill 讓 AI 可以快速產生和維護專案的 `snapshot.json`「專案地圖」，大幅減少 AI 理解專案結構的時間。
+Snapshot Plugin 讓 AI 可以快速產生和維護專案的 `snapshot.json`「專案地圖」，大幅減少 AI 理解專案結構的時間。
 
 ## 什麼是 Snapshot？
 
@@ -35,11 +35,30 @@ Snapshot 的解決方案：
 
 | 指令 | 說明 |
 |------|------|
-| `/ss-init` | 初始化 snapshot，偵測專案類型並產生初始 `snapshot.json` |
-| `/ss-gen` | 重新掃描專案並更新 `snapshot.json` |
-| `/ss-read` | 讀取並解析現有的 snapshot，顯示專案概覽 |
-| `/ss-validate` | 驗證 snapshot 與實際專案結構是否一致 |
-| `/ss-config` | 自訂 snapshot 產生設定 |
+| `/snapshot` | 掃描專案並產生 `.snapshot/snapshot.json` |
+| `/snapshot-link` | 在 `CLAUDE.md` 加入 snapshot 參考提示 |
+
+## 快速開始
+
+```
+/snapshot
+```
+
+AI 會自動：
+1. 建立 `.snapshot/` 目錄
+2. 偵測專案類型（語言、框架）
+3. 掃描專案結構
+4. 產生 `.snapshot/snapshot.json`
+
+## 輸出位置
+
+```
+your-project/
+├── .snapshot/
+│   └── snapshot.json    # 專案快照（給 AI 看的）
+├── src/
+└── ...
+```
 
 ## 支援的專案類型
 
@@ -48,9 +67,9 @@ Snapshot 的解決方案：
 | **Java (Spring)** | `build.gradle`, `pom.xml` | @Controller, @Service, @Repository, @Entity |
 | **Kotlin (Android)** | `build.gradle.kts`, `AndroidManifest.xml` | Activity, Fragment, ViewModel, Repository |
 | **Python** | `requirements.txt`, `pyproject.toml` | 模組、類別、函數 |
-| **JavaScript/TypeScript (Next.js)** | `package.json`, `next.config.js` | pages, components, API routes, hooks |
-| **C# (.NET Core)** | `*.csproj`, `*.sln` | Controllers, Services, Models, DbContext |
-| **自訂** | 使用者定義 | 使用者定義的規則 |
+| **JavaScript/TypeScript** | `package.json` | components, API routes, hooks |
+| **C# (.NET)** | `*.csproj`, `*.sln` | Controllers, Services, Models |
+| **其他** | 自動偵測 | 根據檔案結構分析 |
 
 ## Snapshot 結構範例
 
@@ -59,112 +78,54 @@ Snapshot 的解決方案：
   "project": "my-app",
   "description": "專案描述",
   "version": "1.0",
+  "generated_at": "2025-01-01T00:00:00Z",
   "tech_stack": {
-    "language": "Java",
-    "framework": "Spring Boot",
-    "build_tool": "Gradle"
+    "language": "TypeScript",
+    "framework": "Next.js",
+    "build_tool": "npm",
+    "dependencies": ["react", "next", "prisma"]
   },
-  "entry_point": {
-    "path": "src/main/java/com/example/Application.java",
-    "purpose": "Spring Boot 應用程式入口"
+  "structure": {
+    "entry_point": {
+      "path": "src/app/page.tsx",
+      "purpose": "首頁入口"
+    },
+    "directories": {
+      "src/app/": "App Router 頁面",
+      "src/components/": "React 元件",
+      "src/lib/": "工具函數"
+    }
   },
   "modules": {
-    "controllers": {
-      "UserController": {
-        "path": "src/main/java/com/example/controller/UserController.java",
-        "type": "controller",
-        "purpose": "處理使用者相關 API"
+    "components": {
+      "Header": {
+        "path": "src/components/Header.tsx",
+        "purpose": "網站導覽列"
       }
     },
     "services": {
-      "UserService": {
-        "path": "src/main/java/com/example/service/UserService.java",
-        "type": "service",
-        "purpose": "使用者業務邏輯"
+      "auth": {
+        "path": "src/lib/auth.ts",
+        "purpose": "認證邏輯"
       }
     }
   },
   "config_files": {
-    "application.properties": {
-      "path": "src/main/resources/application.properties",
-      "purpose": "應用程式設定"
-    }
+    "next.config.js": "Next.js 設定",
+    "tailwind.config.js": "Tailwind CSS 設定"
   },
-  "commands": {
-    "build": "./gradlew build",
-    "run": "./gradlew bootRun",
-    "test": "./gradlew test"
+  "scripts": {
+    "dev": "npm run dev",
+    "build": "npm run build"
   }
 }
 ```
 
-## 快速開始
+## 最佳實踐
 
-### 1. 初始化 Snapshot
-
-```
-/ss-init
-```
-
-AI 會自動偵測專案類型，掃描專案結構，並產生 `snapshot.json`。
-
-### 2. 讀取 Snapshot
-
-```
-/ss-read
-```
-
-顯示專案概覽，包括技術棧、模組結構、設定檔等。
-
-### 3. 更新 Snapshot
-
-當專案有變更時：
-
-```
-/ss-gen
-```
-
-重新掃描並更新 `snapshot.json`。
-
-### 4. 驗證 Snapshot
-
-確認 snapshot 是否與實際專案一致：
-
-```
-/ss-validate
-```
-
-### 5. 自訂設定
-
-如果需要調整產生規則：
-
-```
-/ss-config
-```
-
-## 進階功能
-
-### Snapshot 2.0 多檔案架構
-
-當專案很大時，可以將單一 snapshot 拆分為多個檔案：
-
-```
-snapshots/
-├── snapshot_index.json   # 主索引
-├── core.json             # 核心模組
-├── services.json         # 服務模組
-└── utils.json            # 工具類
-```
-
-在 `/ss-config` 中設定 `outputFormat: "multi"` 即可啟用。
-
-### 自訂範本
-
-可以建立自訂範本來支援其他框架或語言：
-
-1. 複製 `templates/custom.json`
-2. 修改偵測規則和模組定義
-3. 在 `/ss-config` 中指定使用自訂範本
+1. **首次使用**：執行 `/snapshot` 產生專案快照
+2. **定期更新**：專案有重大變更時重新執行 `/snapshot`
+3. **新對話開始**：AI 會自動讀取 `.snapshot/snapshot.json`
 
 ## 參考資料
 
