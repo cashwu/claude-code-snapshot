@@ -65,6 +65,9 @@ AI 會自動：
 
 ## 輸出位置
 
+根據專案規模和架構，Snapshot 會自動決定輸出模式：
+
+### 一般專案
 ```
 your-project/
 ├── .snapshot/
@@ -72,6 +75,47 @@ your-project/
 ├── src/
 └── ...
 ```
+
+### 多專案架構（Java multi-module、.NET solution、Monorepo）
+```
+your-project/
+├── .snapshot/
+│   ├── index.json           # 主索引
+│   └── projects/
+│       ├── module-a.json    # 子專案 A
+│       └── module-b.json    # 子專案 B
+├── module-a/
+├── module-b/
+└── ...
+```
+
+### 大型專案（50+ 模組）
+```
+your-project/
+├── .snapshot/
+│   ├── index.json           # 主索引
+│   └── modules/
+│       ├── controllers.json # 控制器模組
+│       ├── services.json    # 服務模組
+│       └── ...
+├── src/
+└── ...
+```
+
+## 自動分檔功能
+
+Snapshot 會根據專案規模和架構自動決定是否分檔：
+
+| 條件 | 輸出模式 | 說明 |
+|------|---------|------|
+| 多專案架構 | `projects` | 自動偵測 Java multi-module、.NET solution、Monorepo |
+| 大型單一專案 | `modules` | 模組數量超過 50 個時自動分檔 |
+| 一般專案 | `none` | 維持單一 `snapshot.json` |
+
+### 多專案架構偵測
+- **Java/Kotlin**: `settings.gradle` 或 `settings.gradle.kts` 中有 `include` 語句
+- **.NET**: `*.sln` 檔案中包含多個 `*.csproj`
+- **JS/TS Monorepo**: `pnpm-workspace.yaml`、`lerna.json`、或 `package.json` 中的 `workspaces`
 
 ## 支援的專案類型
 
