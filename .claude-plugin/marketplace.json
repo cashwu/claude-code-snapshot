@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "Snapshot Skill - 產生專案地圖讓 AI 快速了解專案結構",
-    "version": "1.0.0"
+    "version": "1.1.0"
   },
   "plugins": [
     {
       "name": "snapshot",
       "source": "./plugins/snapshot",
       "description": "產生和維護 snapshot.json 專案地圖",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "author": {
         "name": "cash"
       },
